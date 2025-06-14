@@ -109,7 +109,8 @@ impl<T> JsonTokenizer<T> where T: Read + Seek {
                     let _ = self.iterator.next();
                 }
 
-                ' ' => {
+                ' ' | '\t' | '\r' | '\n' => {
+                    let _ = self.iterator.next();
                     continue;
                 },
 
@@ -160,7 +161,7 @@ impl<T> JsonTokenizer<T> where T: Read + Seek {
                 '.' => {
                     chars.push(*c);
                     let _ = self.iterator.next();
-                    is_decimal = true;
+                    is_decimal = false;
                 }
                 
                 _ => {
